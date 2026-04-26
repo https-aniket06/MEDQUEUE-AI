@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "executionArgs": {
+    "projectName": "trithon",
+    "projectPath": "c:\\Quick Share\\trithon",
+    "testIds": [],
+    "additionalInstruction": "Please prioritize testing the /auth/admin route and the login/signup functionality for hospital admins which was recently implemented. Use the separate Firebase admin configuration. Ensure that the dashboard navigation for admins works correctly after login.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-0lK_fpnxs91WGw8Nvy2heaM5Wb0reRShaAYVA0QmEZlq8aPH_DJAknYYNjvFxkAYgDG-18soOXePKzqHynInCLID9_Et6sPhMfyLGN81e3kBjarxcD0mz5RTE0mkl66RRFc"
+    }
+  },
+  "serverPort": 56740,
+  "proxy": "http://92793c18-8184-4f37-af01-c0c811acda70:p16ZIlzDREB762Chn96cRhFNfcrZqpmK@tun.testsprite.com:8080"
+}
