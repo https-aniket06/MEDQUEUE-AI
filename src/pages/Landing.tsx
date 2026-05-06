@@ -34,14 +34,20 @@ const Landing = () => {
                     const hospitals = await fetchHospitals(userLat, userLng);
                     if (hospitals && hospitals.length > 0) {
                         const closest = hospitals.reduce((prev: any, curr: any) => {
-                            const prevDist = getDistance(userLat, userLng, prev.position?.lat, prev.position?.lng);
-                            const currDist = getDistance(userLat, userLng, curr.position?.lat, curr.position?.lng);
+                            const prevLat = prev.location?.lat || prev.position?.lat;
+                            const prevLng = prev.location?.lng || prev.position?.lng;
+                            const currLat = curr.location?.lat || curr.position?.lat;
+                            const currLng = curr.location?.lng || curr.position?.lng;
+                            const prevDist = getDistance(userLat, userLng, prevLat, prevLng);
+                            const currDist = getDistance(userLat, userLng, currLat, currLng);
                             return prevDist < currDist ? prev : curr;
                         }, hospitals[0]);
                         
                         // Add mock phone if missing
                         closest.phone = closest.phone || `+91 ${Math.floor(Math.random() * 90000) + 10000} ${Math.floor(Math.random() * 90000) + 10000}`;
-                        closest.distance = getDistance(userLat, userLng, closest.position?.lat, closest.position?.lng);
+                        const closestLat = closest.location?.lat || closest.position?.lat;
+                        const closestLng = closest.location?.lng || closest.position?.lng;
+                        closest.distance = getDistance(userLat, userLng, closestLat, closestLng);
                         setNearestHospital(closest);
                     }
                     

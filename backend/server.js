@@ -9,16 +9,16 @@ import twilio from 'twilio';
 
 dotenv.config();
 
-const openaiHealth = new OpenAI({
+const openaiHealth = process.env.HEALTH_OPENAI_API_KEY ? new OpenAI({
     apiKey: process.env.HEALTH_OPENAI_API_KEY,
-});
+}) : null;
 
 
-const twilioClient = twilio(
+const twilioClient = (process.env.TWILIO_API_KEY_SID && process.env.TWILIO_API_KEY_SECRET && process.env.TWILIO_ACCOUNT_SID) ? twilio(
     process.env.TWILIO_API_KEY_SID,
     process.env.TWILIO_API_KEY_SECRET,
     { accountSid: process.env.TWILIO_ACCOUNT_SID }
-);
+) : null;
 
 const app = express();
 const httpServer = createServer(app);

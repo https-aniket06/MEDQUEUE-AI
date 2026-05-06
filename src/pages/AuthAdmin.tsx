@@ -28,7 +28,7 @@ const AuthAdmin = () => {
     useEffect(() => {
         const fetchHospitals = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001/api'}/hospitals`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/hospitals`);
                 if (response.ok) {
                     const data = await response.json();
                     setHospitals(data.map((h: any) => ({ id: h.id, name: h.name })));

@@ -63,6 +63,7 @@ const MedQueuePatient = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
                 setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+                setActiveCategory('Nearby'); // Auto-switch to nearby when location granted
             });
         }
     }, []);
@@ -95,7 +96,10 @@ const MedQueuePatient = () => {
             const waitTime = h?.avgWaitTime ?? h?.wait_time ?? ((h?.queue || 0) * 5);
 
             const hCity = h?.city || h?.state || '';
-            const dist = userLocation ? getDistance(userLocation.lat, userLocation.lng, h.position?.lat, h.position?.lng) : Infinity;
+            
+            const lat = h.location?.lat || h.position?.lat;
+            const lng = h.location?.lng || h.position?.lng;
+            const dist = userLocation && lat && lng ? getDistance(userLocation.lat, userLocation.lng, lat, lng) : Infinity;
 
             const matchesSearch = hName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 hAddress.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -112,7 +116,7 @@ const MedQueuePatient = () => {
                 return matchesSearch && waitTime <= 40;
             }
             if (activeCategory === 'Nearby') {
-                return matchesSearch && (dist <= 25); // 25km radius for Nearby
+                return matchesSearch && dist >= 0; 
             }
             return matchesSearch;
         }).sort((a, b) => {
@@ -122,8 +126,12 @@ const MedQueuePatient = () => {
                 return waitA - waitB;
             }
             if (activeCategory === 'Nearby' && userLocation) {
-                const distA = getDistance(userLocation.lat, userLocation.lng, a.position?.lat, a.position?.lng);
-                const distB = getDistance(userLocation.lat, userLocation.lng, b.position?.lat, b.position?.lng);
+                const latA = a.location?.lat || a.position?.lat;
+                const lngA = a.location?.lng || a.position?.lng;
+                const latB = b.location?.lat || b.position?.lat;
+                const lngB = b.location?.lng || b.position?.lng;
+                const distA = latA && lngA ? getDistance(userLocation.lat, userLocation.lng, latA, lngA) : Infinity;
+                const distB = latB && lngB ? getDistance(userLocation.lat, userLocation.lng, latB, lngB) : Infinity;
                 return distA - distB;
             }
             return 0;
